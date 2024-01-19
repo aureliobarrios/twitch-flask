@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
+
+    <title> Twitter Recommendor Sample</title>
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        img {
+            /* vertical-align: middle; */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            padding-top: 2%;
+            font-weight: 500;
+        }
+
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 500;
+        }
+
+        p {
+            font-size: 28px;
+        }
+
+        /* Position the image container (needed to position the left and right arrows) */
+        .container {
+            position: relative;
+        }
+
+        /* Hide the images by default */
+        .mySlides {
+            display: none;
+        }
+
+        /* Next & previous buttons */
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Position the "next button" to the right */
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+            background-color: black;
+        }
+
+        .prev {
+            background-color: black;
+        }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Number text (1/3 etc) */
+        .numbertext {
+            color: black;
+            font-size: 15px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Container for image text */
+        .caption-container {
+            text-align: center;
+            /* background-color: grey; */
+            padding: 25px 16px;
+            color: black;
+            font-size: 25px;
+        }
+
+        .my-button {
+            display: inline-block;
+            margin: 1px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            padding: 6px 12px;
+            -moz-transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        #twitter-btn {
+            background: #1DA1F2;
+            color: white;
+        }
+
+        #back-btn {
+            background: grey;
+            color: white;
+        }
+
+        #twitch-btn {
+            background: #9146FF;
+            color: white;
+        }
+
+        #twitter-btn:hover {
+            background: lightgreen;
+            color: #1DA1F2;
+        }
+
+        #back-btn:hover {
+            background: lightgreen;
+            color: black;
+        }
+
+        #twitch-btn:hover {
+            background: lightgreen;
+            color: #9146FF;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1 style="text-align: center;">Streamer Recommendations</h1>
+
+
+
+    <div class="container">
+
+        {% for streamer in result %}
+            <div class="mySlides">
+                <div class="numbertext">{{ loop.index }} / 5</div>
+                <img class="stream-img" src={{ streamer[1] }}
+                    alt={{ streamer[0] }} title={{ streamer[2] }} style="width: 30%; height: auto;">
+            </div>
+        {% endfor %}
+
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+    </div>
+
+    <div class="caption-container">
+        <p id="caption"></p>
+    </div>
+
+    <div style="text-align: center; margin-top: -1%;">
+        <a class="my-button" id="twitter-btn" target="_blank" href="">Twitter Page</a>
+        <a class="my-button" id="back-btn" href="/">Recommendor</a>
+        <a class="my-button" id="twitch-btn" target="_blank" href="">Twitch Page</a>
+    </div>
+
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("stream-img");
+            var captionText = document.getElementById("caption");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex - 1].style.display = "block";
+            captionText.innerHTML = dots[slideIndex - 1].alt;
+
+            var twitterButton = document.getElementById("twitter-btn");
+            twitterButton.href = "https://twitter.com/" + dots[slideIndex - 1].alt;
+
+            var twitchButton = document.getElementById("twitch-btn");
+            twitchButton.href = "https://www.twitch.tv/" + dots[slideIndex - 1].title;
+        }
+    </script>
+
+</body>
+
+</html>
